@@ -1,4 +1,3 @@
-import pickle
 import json
 import pandas as pd
 from uk_covid19 import Cov19API
@@ -48,5 +47,6 @@ class timeseries():
         timeseriesdf.fillna(0.0, inplace=True)
         self.df = timeseriesdf
     def save_json(self):
+        """ Save JSON to file"""
         with open(self.file_name, "wt") as OUTF:
             json.dump(self.json, OUTF)
