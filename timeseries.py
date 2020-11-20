@@ -1,11 +1,12 @@
 import pickle
+import json
 import pandas as pd
 from uk_covid19 import Cov19API
 class timeseries():
     def __init__(self, file_name, columns, filters, structure):
         self.file_name = file_name
-        with open(file_name, 'rb') as f:
-            self.df = pickle.load(f)
+        with open(self.file_name, "rt") as INFILE:
+            self.json=json.load(INFILE)
         self.columns = columns
         self.filters = filters
         self.structure = structure
@@ -14,11 +15,11 @@ class timeseries():
         # Create an API object
         api = Cov19API(filters=self.filters, structure=self.structure)
         # Get the API rsponse
-        self.response = api.get_json()
+        self.json = api.get_json()
     def wrangle_data(self):
         """ Parameters: rawdata - data from json file or API call. Returns a dataframe.
         Edit to include the code that wrangles the data, creates the dataframe and fills it in. """
-        datalist=self.response['data']
+        datalist=self.json['data']
         # Extract all dates from the datalist and sort them in order
         dates=[dictionary['date'] for dictionary in datalist]
         dates.sort()
@@ -46,3 +47,6 @@ class timeseries():
         # Fill in any empty values with 0s
         timeseriesdf.fillna(0.0, inplace=True)
         self.df = timeseriesdf
+    def save_json(self):
+        with open(self.file_name, "wt") as OUTF:
+            json.dump(self.json, OUTF)
