@@ -1,7 +1,10 @@
+# Import neccessary libraries
 import json
 import time
 import pandas as pd
 from uk_covid19 import Cov19API
+
+# Create time series class
 class timeseries():
     def __init__(self, file_name, columns, filters, structure,series, scale, apibutton):
         self.file_name = file_name
